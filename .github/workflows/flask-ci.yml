@@ -45,4 +45,5 @@ jobs:
     - name: Ejecutar pruebas con reporte de cobertura
       run: |
         pip install pytest-cov
+        pip install pytest-cov
         pytest --cov=app --cov-report=xml
