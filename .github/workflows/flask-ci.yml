@@ -33,7 +33,7 @@ jobs:
 
     - name: Escaneo de seguridad de dependencias
       run: |
-        safety check
+        safety scan
 
     - name: Verificar estilo de código con flake8
       run: |
