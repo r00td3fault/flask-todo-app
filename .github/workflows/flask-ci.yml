@@ -46,3 +46,11 @@ jobs:
       run: |
         pip install pytest-cov
         pytest --cov=app --cov-report=xml
+
+    - name: Notificar a Discord
+      uses: rjstone/discord-webhook-notify@v1
+      if: always()
+      with:
+        severity: ${{ job.status == 'success' && 'info' || 'error' }}
+        details: "El workflow de Flask terminó con estado: ${{ job.status }}"
+        webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
