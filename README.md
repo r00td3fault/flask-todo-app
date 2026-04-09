@@ -54,6 +54,22 @@ TASKS_FILE=/tmp/mis_tareas.json python run.py
 pytest -q
 ```
 
+## Integracion continua (CI)
+
+El archivo [`.github/workflows/flask-ci.yml`](.github/workflows/flask-ci.yml) define el workflow **Flask CI** en GitHub Actions.
+
+- **Cuando se ejecuta**: en cada `push` y en cada `pull_request` dirigidos a la rama `main`.
+- **Entorno**: `ubuntu-latest` con **Python 3.14** (hay comentarios en el YAML para usar una matriz de versiones si lo necesitas).
+- **Pasos**:
+  1. Checkout del repositorio.
+  2. Instalacion de dependencias desde `requirements.txt`.
+  3. **Safety** (pyupio): escaneo de vulnerabilidades en dependencias; requiere el secreto `SAFETY_API_KEY` y usa salida detallada y `--apply-fixes`.
+  4. **flake8**: comprobacion de errores graves (E9, F63, F7, F82); hay lineas comentadas para reglas de estilo adicionales.
+  5. **pytest-cov**: pruebas con cobertura del paquete `app` y reporte XML (`--cov=app --cov-report=xml`).
+  6. **Notificacion a Discord** al terminar el job (exito o fallo), usando el secreto `DISCORD_WEBHOOK_URL`.
+
+Para que el pipeline funcione por completo en el remoto, configura en el repositorio los secretos `SAFETY_API_KEY` y `DISCORD_WEBHOOK_URL` segun corresponda.
+
 ## Flujos de la aplicacion
 
 ### Endpoints API
